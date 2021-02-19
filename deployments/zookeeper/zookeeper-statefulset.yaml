@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: zookeeper
+  name: zookeeper
+spec:
+  replicas: 3
+  serviceName: zookeeper-service
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - image: zookeeper:3.6.2
+          imagePullPolicy: IfNotPresent
+          name: zookeeper
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+            - containerPort: 8080
+          env:
+            - name: ZOO_SERVERS
+              value: "server.0=zookeeper-0.zookeeper-service.default.svc.cluster.local:2888:3888;2181 \
+              server.1=zookeeper-1.zookeeper-service.default.svc.cluster.local:2888:3888;2181 \
+              server.2=zookeeper-2.zookeeper-service.default.svc.cluster.local:2888:3888;2181"
+          command: ["sh","-c"]
+          args: ["export ZOO_MY_ID=${HOSTNAME##*-}; echo $ZOO_MY_ID;exec /docker-entrypoint.sh zkServer.sh start-foreground"]
+          volumeMounts:
+            - name: pv
+              mountPath: /data
+      nodeSelector: #master
+        node-role.kubernetes.io/master: ''
+  volumeClaimTemplates:
+    - metadata:
+        name: pv
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 5Gi
+  selector:
+    matchLabels:
+      app: zookeeper

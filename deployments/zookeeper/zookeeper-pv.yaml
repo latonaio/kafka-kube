@@ -1,0 +1,59 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-zookeeper-0
+  labels:
+    type: local
+spec:
+  storageClassName: zookeeper
+  capacity:
+    storage: 5Gi
+  claimRef:
+    namespace: default
+    name: pv-zookeeper-0
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    type: DirectoryOrCreate
+    path: "/var/lib/aion/default/mnt/zookeeper_data_0"
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-zookeeper-1
+  labels:
+    type: local
+spec:
+  storageClassName: zookeeper
+  capacity:
+    storage: 5Gi
+  claimRef:
+    namespace: default
+    name: pv-zookeeper-1
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    type: DirectoryOrCreate
+    path: "/var/lib/aion/default/mnt/zookeeper_data_1"
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-zookeeper-2
+  labels:
+    type: local
+spec:
+  storageClassName: zookeeper
+  claimRef:
+    namespace: default
+    name: pv-zookeeper-2
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    type: DirectoryOrCreate
+    path: "/var/lib/aion/default/mnt/zookeeper_data_2"

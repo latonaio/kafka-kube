@@ -1,0 +1,17 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: kafka-pv
+  namespace: default
+  labels:
+    type: local
+spec:
+  storageClassName: kafka
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    type: DirectoryOrCreate
+    path: "/var/lib/aion/default/mnt/kafka_data"
