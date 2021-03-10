@@ -7,6 +7,10 @@ publisherによって送信されたrecordはbrokerに送信され、対応す�
 このように、partition単位でrecordの書き込み/読み込みを行うことによって、subscriberは並列な書き込み/読み込みを行うことが可能になります。  
 kafka-kubeは、冗長性を確保するため、kafka 3台、zookeeper3台によって構成されています。
 
+# gcpとedgeのハイブリッド環境構築手順
+- [gcp構築手順](documents/gcp.md)
+- [openvpn構築手順](documents/openvpn.md)
+- [k8s構築手順](documents/buildk8s.md)
 
 # 動作環境
 kafka-kubeはkubernetes上での動作を前提としています。
@@ -45,7 +49,7 @@ brokerに送られたメッセージ。consumerはtopicとpartitionを指定す�
 kafka-${BROKER_NUMBER}.kafka-service.default.svc.cluster.local:9092
 ```
 # システム構造
-![System Configuration](images/kafka-kube_structure.png)
+![System Configuration](documents/images/0.png)
 
 # 使用したdocker image
 ```markdown
