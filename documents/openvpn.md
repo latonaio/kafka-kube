@@ -1,16 +1,22 @@
-**目次** . 
-* [openvpnのserverとclientの構築手順](#openvpnのserverとclientの構築手順)  
-    * [openvpn install](#openvpn-server-install)  
-    * [openvpn server設定](#openvpn-server設定)  
-    * [Server側のOpenVPNを起動](#Server側のOpenVPNを起動)  
-* [Client側の作業](#Client側の作業)  
-    * [openvpn install](#openvpn-client-install)  
-    * [openvpn client側設定](#openvpn-client側設定)  
-    * [Client側の仮想IPの固定化](#Client側の仮想IPの固定化)  
-    * [openvpn再起動](#openvpn再起動)  
-    
-# openvpnのserverとclientの構築手順
-### openvpn server install
+# OpenVPNの設定手順 
+
+**目次**
+
+* [Server側の作業](#Server側の作業)
+    * [OpenVPN Serverのインストール](#OpenVPN-Serverのインストール)
+    * [OepnVPN Server設定](#OpenVPN-Server設定)
+    * [Server側のOpenVPNを起動](#Server側のOpenVPNを起動)
+* [Client側の作業](#Client側の作業)
+    * [OpenVPN Clientのインストール](#OpenVPN-Clientのインストール)
+    * [OpenVPN Client側設定](#OpenVPN-Client側設定)
+    * [Client側の仮想IPの固定化](#Client側の仮想IPの固定化)
+    * [OpenVPN再起動](#OpenVPN再起動)
+
+## Server側の作業
+
+* 対象マシン: GCP上に構築したGCEインスタンス
+
+### OpenVPN Servernのインストール
 ```shell
 #OpenVPNのインストール
 sudo apt install openvpn easy-rsa
@@ -35,7 +41,7 @@ export KEY_ORG="Aion" #Client名
 export KEY_EMAIL="xxxxx@gmail.com"
 export KEY_OU="vpn"
 ```
-### openvpn server設定
+### OpenVPN Server設定
 ```shell
 cd ~/ca
 #　config作成
@@ -123,13 +129,16 @@ sudo systemctl start openvpn@server
 ---
 
 # Client側の作業
-### openvpn install
+
+* 対象マシン: Edge端末
+
+### OpenVPN Clientのインストール
 ```shell
 #OpenVPNのインストール
 sudo apt install openvpn
 ```
 
-### openvpn client側設定
+### OpenVPN Client設定
 ```shell
 cd /etc/openvpn/
 sudo touch client.conf
@@ -200,7 +209,7 @@ vim ./ccd/Client名 #ここではaionz
 ifconfig-push 10.0.0.6 10.0.0.5
 ```
 
-### openvpn再起動
+### OpenVPN再起動
 ```shell
 #Server側のOpenVPNを再起動
 sudo systemctl restart openvpn@server

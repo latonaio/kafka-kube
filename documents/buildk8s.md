@@ -1,16 +1,18 @@
+# K8sクラスタの構築手順
 
-**目次** 
-* [事前準備](#事前準備)  
-* [gcp側の作業](#gcp側の作業)  
-    * [gcpでのk8sインストール作業](#gcpでのk8sインストール作業)  
-    * [k8sのmasterが使用するipを変更](#k8sのmasterが使用するipを変更)  
-    * [master node起動](#master-node起動)  
-    * [api操作token取得](#api操作token取得)  
-* [edge側の作業](#edge側の作業)  
-    * [edgeでのk8sインストール作業](#edgeでのk8sインストール作業)  
-    * [k8s nodeが使用するipを変更](#k8s-nodeが使用するipを変更)  
-    * [k8sのmaster側でメモったjoinコマンドを実行](#k8sのmaster側でメモったjoinコマンドを実行)  
-    * [k8sのノード一覧](#k8sのノード一覧)  
+**目次**
+
+* [事前準備](#事前準備)
+* [gcp側の作業](#gcp側の作業)
+    * [gcpでのk8sインストール作業](#gcpでのk8sインストール作業)
+    * [k8sのmasterが使用するipを変更](#k8sのmasterが使用するipを変更)
+    * [master node起動](#master-node起動)
+    * [api操作token取得](#api操作token取得)
+* [edge側の作業](#edge側の作業)
+    * [edgeでのk8sインストール作業](#edgeでのk8sインストール作業)
+    * [k8s nodeが使用するipを変更](#k8s-nodeが使用するipを変更)
+    * [k8sのmaster側でメモったjoinコマンドを実行](#k8sのmaster側でメモったjoinコマンドを実行)
+    * [k8sのノード一覧](#k8sのノード一覧)
 
 ## 事前準備
 本手順を実行する前に下記条件を揃う必要があります。
@@ -100,14 +102,14 @@ sudo apt show kubelet kubeadm kubectl
 ```shell
 # openvpnのtun0(nic)のIPを指定してk８sを構築
 ip a | grep tun0
-# inet x.x.x.x　のIPをメモリます。
+# inet x.x.x.x　のIPを記録しておく
 
 sudo vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 ```
 ```text
 # 変更前
 Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
-# 変更後　メモったIPを下記設定に追加
+# 記録したIPを下記設定に追加
 Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml --node-ip=10.0.0.6"
 ```
 
