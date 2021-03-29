@@ -1,5 +1,16 @@
-# openvpnのserver,clientの構築手順
-## Server, Client共通作業
+**目次** . 
+* [openvpnのserverとclientの構築手順](#openvpnのserverとclientの構築手順)  
+    * [openvpn install](#openvpn-server-install)  
+    * [openvpn server設定](#openvpn-server設定)  
+    * [Server側のOpenVPNを起動](#Server側のOpenVPNを起動)  
+* [Client側の作業](#Client側の作業)  
+    * [openvpn install](#openvpn-client-install)  
+    * [openvpn client側設定](#openvpn-client側設定)  
+    * [Client側の仮想IPの固定化](#Client側の仮想IPの固定化)  
+    * [openvpn再起動](#openvpn再起動)  
+    
+# openvpnのserverとclientの構築手順
+### openvpn server install
 ```shell
 #OpenVPNのインストール
 sudo apt install openvpn easy-rsa
@@ -7,10 +18,10 @@ Server側での作業
 #環境設定ファイルの作成
 make-cadir ~/ca
 sudo vi ~/ca/vars
+### 下記場所を変更
 ```
 ```text
-#変更前
-export KEY_COUNTRY="US"
+#変更前export KEY_COUNTRY="US"
 export KEY_PROVINCE="California"
 export KEY_CITY="San Francisco"
 export KEY_ORG="Copyleft Certificate Co"
@@ -24,10 +35,11 @@ export KEY_ORG="Aion" #Client名
 export KEY_EMAIL="xxxxx@gmail.com"
 export KEY_OU="vpn"
 ```
+### openvpn server設定
 ```shell
+cd ~/ca
 #　config作成
 cp openssl-1.0.0.cnf openssl.conf
-cd ~/ca
 #環境変数適用
 source vars
 #CA証明書と秘密鍵の作成
@@ -63,6 +75,7 @@ sudo touch server.conf
 sudo chmod 755 server.conf
 #server.confに以下を書き込み
 sudo vi server.conf
+#下記設の定を記述
 ```
 ```text
 port   11940 #ポート番号
@@ -103,14 +116,20 @@ log-append  /var/log/openvpn.log
 
 verb 3 #ログレベル
 ```
-
+### Server側のOpenVPNを起動
 ```shell
-#Server側のOpenVPNを起動
 sudo systemctl start openvpn@server
 ```
-
+---
 
 # Client側の作業
+### openvpn install
+```shell
+#OpenVPNのインストール
+sudo apt install openvpn
+```
+
+### openvpn client側設定
 ```shell
 cd /etc/openvpn/
 sudo touch client.conf
@@ -159,7 +178,7 @@ ta.key  TLS認証用秘密鍵
 
 #Client側のOpenVPNを起動
 sudo systemctl start openvpn
-````
+```
 
 # Client側の仮想IPの固定化
 ```shell
@@ -172,13 +191,16 @@ ip -a
 #Server側でClientの仮想IPを固定する
 cd /etc/openvpn/
 mkdir ccd
-vim ./ccd/Client名 #ここではaion
+vim ./ccd/Client名 #ここではaionz
 ```
+
 ```shell
 #実行コマンド　Client仮想IPアドレス　サーバ固定IPアドレスの順に記載
 #ip -aで調べたIPとpeerがこれに対応
 ifconfig-push 10.0.0.6 10.0.0.5
 ```
+
+### openvpn再起動
 ```shell
 #Server側のOpenVPNを再起動
 sudo systemctl restart openvpn@server
